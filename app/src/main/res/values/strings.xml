@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Book Search</string>
+
+    <string name="publish_date">Publish Date</string>
+    <string name="authors">Authors</string>
+    <string name="publisher">Publisher</string>
+    <string name="title">Title</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="description">Description</string>
+    <string name="preview">Preview</string>
+    <string name="buy">Buy</string>
+    <string name="enter_keyword">Enter keyword</string>
+    <string name="search">Search</string>
+    <string name="more">More</string>
+</resources>
