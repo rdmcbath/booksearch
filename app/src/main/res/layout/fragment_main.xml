@@ -16,20 +16,15 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:layout_marginBottom="2dp"
-            app:boxCornerRadiusBottomEnd="20dp"
-            app:boxCornerRadiusBottomStart="20dp"
-            app:boxCornerRadiusTopEnd="20dp"
-            app:boxCornerRadiusTopStart="20dp"
-            app:boxStrokeColor="@null"
+            android:background="@drawable/bg_no_underline"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/searchTermKeyword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/search_background"
+                android:inputType="textVisiblePassword"
                 android:hint="@string/enter_keyword" />
         </com.google.android.material.textfield.TextInputLayout>
 

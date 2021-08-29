@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mcbath.booksearch.adapters.SearchResultsAdapter
 import com.mcbath.booksearch.databinding.FragmentMainBinding
+import com.mcbath.booksearch.utils.Utils
 import com.mcbath.booksearch.viewmodels.MainViewModel
 
 /*
@@ -59,6 +60,9 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val utils = Utils()
+        utils.removeUnderline(binding!!.searchTermKeyword)
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel!!.init()
         viewModel!!.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
