@@ -1,17 +1,23 @@
 package com.mcbath.booksearch.adapters
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mcbath.booksearch.R
 import com.mcbath.booksearch.models.Volume
 import com.mcbath.booksearch.utils.Utils
+import com.mcbath.booksearch.view.DetailFragment
 import com.mcbath.booksearch.view.MainActivity
-import java.util.ArrayList
+import java.util.*
+
 
 class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchResultsHolder>() {
     private var volumes: List<Volume> = ArrayList()
@@ -31,7 +37,8 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchRes
         holder.publishedDateTextView.text = volume.volumeInfo?.publishedDate
         if (volume.volumeInfo?.imageLinks != null) {
             val imageUrl =
-                volume.volumeInfo.imageLinks.smallThumbnail?.replace("http://", "https://").toString()
+                volume.volumeInfo.imageLinks.smallThumbnail?.replace("http://", "https://")
+                    .toString()
             Glide.with(holder.itemView)
                 .load(imageUrl)
                 .into(holder.thumbnailImageView)
@@ -43,9 +50,14 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchRes
         }
 
         holder.itemView.setOnClickListener(View.OnClickListener {
-            if (title != null) {
-                (it.context as MainActivity).openDetailFragment(volume)
-            }
+            val fragment: Fragment = DetailFragment()
+            val bundle = Bundle()
+            bundle.putParcelable("volume", volume)
+            fragment.setArguments(bundle)
+            val fm: FragmentManager = (it.context as MainActivity).supportFragmentManager
+            val ft: FragmentTransaction = fm.beginTransaction()
+            ft.replace(android.R.id.content, fragment)
+            ft.addToBackStack("detailFragment").commit()
         })
     }
 

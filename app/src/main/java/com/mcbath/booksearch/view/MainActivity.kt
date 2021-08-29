@@ -15,12 +15,4 @@ class MainActivity : AppCompatActivity() {
                 .add(android.R.id.content, MainFragment.newInstance()).commit()
         }
     }
-
-    /* pass the details of the selected book to a new instance of DetailFragment, passing a data model volume at the specified position from the adapter. Then get them
-     as args in the DetailFragment */
-    fun openDetailFragment(volume: Volume) {
-        supportFragmentManager.beginTransaction()
-            .replace(android.R.id.content, DetailFragment.newInstance(volume))
-            .addToBackStack("detailFragment").commit()
-    }
 }

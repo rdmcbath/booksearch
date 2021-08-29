@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.mcbath.booksearch.R
 import com.mcbath.booksearch.databinding.FragmentDetailBinding
 import com.mcbath.booksearch.models.Volume
+import com.mcbath.booksearch.utils.Utils
 
 class DetailFragment : Fragment() {
 
@@ -44,7 +45,8 @@ class DetailFragment : Fragment() {
     }
 
     private fun updateUI() {
-        imageUrl = volume.volumeInfo?.imageLinks?.smallThumbnail.toString()
+        imageUrl = volume.volumeInfo?.imageLinks?.smallThumbnail?.replace("http://", "https://")
+                .toString()
         title = volume.volumeInfo?.title.toString()
         authors = volume.volumeInfo?.authors.toString()
         date = volume.volumeInfo?.publishedDate.toString()
@@ -57,7 +59,8 @@ class DetailFragment : Fragment() {
                 .error(R.drawable.thumbnail_placeholder)
                 .into(it.bookImage)
         }
-
+        val utils = Utils()
+        val authors = volume.volumeInfo?.authors?.let { utils.stringJoin(it, ", ") }
         binding?.title?.text = title
         binding?.authors?.text = authors
         binding?.publishDate?.text = date
