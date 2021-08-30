@@ -58,7 +58,7 @@ class DetailFragment : Fragment() {
         title = item.volumeInfo?.title.toString()
         authors = item.volumeInfo?.authors.toString()
         date = item.volumeInfo?.publishedDate.toString()
-        val description = item.volumeInfo?.description.toString()
+        val description = item.volumeInfo?.description.toString() // TODO: handle a null here, because sometimes this json key/value is not there
 
         binding?.let {
             Glide.with(requireActivity())
