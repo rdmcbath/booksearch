@@ -51,7 +51,7 @@ class MainFragment : Fragment() {
             searchVolumes(1, maxResults)
             it.hideKeyboard()
             keyword = binding!!.searchTermKeyword.editableText.toString().trim()
-            if(keyword.isEmpty() || keyword.length == 0 || keyword.equals("")) {
+            if(keyword.isEmpty() || keyword.isEmpty() || keyword.equals("")) {
                 binding!!.searchResultsRv.visibility = View.GONE
                 binding!!.moreButton.visibility = View.GONE
             } else {

@@ -9,6 +9,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mcbath.booksearch.R
@@ -19,9 +23,13 @@ import com.mcbath.booksearch.view.MainActivity
 import java.util.*
 
 
-/*RecyclerViewAdapter binds the views for each position in the list.*/
+/*RecyclerViewAdapter binds the views for each position in the list. Unlike a fragment,
+* ViewModel is not preserving the recyclerview data, I think because th holder gets recycled and
+* recreated as a new holder, i.e., viewModel maybe by incorrect, referencing the old item.
+* I'm experimenting with ways to make it work. Possibly by making the ViewHolder become a
+* ViewModelStoreOwner*/
 
-class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchResultsHolder>() {
+class SearchResultsAdapter() : RecyclerView.Adapter<SearchResultsAdapter.SearchResultsHolder>() {
     private var items: List<Item> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultsHolder {
@@ -77,12 +85,12 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchRes
         notifyDataSetChanged()
     }
 
-    fun clearItems(items: List<Item>) {
-        clearItems(this.items)
-        notifyDataSetChanged()
-    }
+    class SearchResultsHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        ViewModelStoreOwner {
 
-    class SearchResultsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private var viewModelStore: ViewModelStore = ViewModelStore()
+        override fun getViewModelStore(): ViewModelStore = viewModelStore
+
         val titleTextView: TextView = itemView.findViewById(R.id.title)
         val authorsTextView: TextView = itemView.findViewById(R.id.authors)
         val publishedDateTextView: TextView = itemView.findViewById(R.id.publishedDate)
