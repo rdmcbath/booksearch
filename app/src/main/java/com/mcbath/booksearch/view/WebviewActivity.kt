@@ -34,6 +34,7 @@ class WebviewActivity : AppCompatActivity() {
         webSettings.allowContentAccess = true
         webSettings.domStorageEnabled = true
         binding.webView.webViewClient = MyWebViewClient()
+        binding.webView.webChromeClient = WebChromeClient()
         binding.webView.loadUrl(webUrl)
     }
 
