@@ -10,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mcbath.booksearch.application.BookSearchApplication
 import com.mcbath.booksearch.databinding.ActivityWebviewBinding
 
+/*I used a simple webview because I ran out of time to make the view look like part of the app.
+* If I had more time, I would probably look into using an android library for this purpose, it a
+* reliable one was available.*/
 
 class WebviewActivity : AppCompatActivity() {
 
-    private var webView: WebView? = null
     private lateinit var binding: ActivityWebviewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

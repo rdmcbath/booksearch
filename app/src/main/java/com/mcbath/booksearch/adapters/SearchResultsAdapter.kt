@@ -19,6 +19,7 @@ import com.mcbath.booksearch.view.DetailFragment
 import com.mcbath.booksearch.view.MainActivity
 import java.util.*
 
+/*RecyclerViewAdapter binds the views for each position in the list.*/
 
 class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchResultsHolder>() {
     private var items: List<Item> = ArrayList()
@@ -68,6 +69,12 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchRes
 
     fun setResults(items: List<Item>) {
         this.items = items
+        notifyDataSetChanged()
+    }
+
+    fun appendResults(response: List<Item>) {
+        this.items = items
+        items.size + response.size
         notifyDataSetChanged()
     }
 

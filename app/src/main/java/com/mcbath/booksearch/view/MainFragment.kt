@@ -25,7 +25,9 @@ import com.mcbath.booksearch.viewmodels.MainViewModel
  - Set up the RecyclerView for showing the search results
  - Set up the TextInputEditTexts to capture the keyword search term and author for performing a search
  - Set up the search Button to trigger the search using a method exposed by the MainViewModel which
-   uses the repository to trigger an API request using Retrofit2 then update the response into the LiveData */
+   uses the repository to trigger an API request using Retrofit2 then update the response into the LiveData
+
+   NOTE: I did not have time to clear out the list when the user clears the edit text field */
 
 class MainFragment : Fragment() {
     private var viewModel: MainViewModel? = null
@@ -48,18 +50,12 @@ class MainFragment : Fragment() {
             searchVolumes(1, maxResults)
             it.hideKeyboard()
         }
-        binding!!.moreButton.setOnClickListener {
-            searchVolumes(beginAgainIndex, maxResults)
-            it.hideKeyboard()
-        }
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val utils = Utils()
-        utils.removeUnderline(binding!!.searchTermKeyword)
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         viewModel!!.init()
@@ -68,6 +64,11 @@ class MainFragment : Fragment() {
                 adapter!!.setResults(volumesResponse.items!!)
                 if (adapter!!.itemCount > 1) {
                     binding!!.moreButton.setVisibility(View.VISIBLE)
+                }
+                binding!!.moreButton.setOnClickListener {
+                    searchVolumes(beginAgainIndex, maxResults)
+                    adapter!!.appendResults(volumesResponse.items!!)
+                    it.hideKeyboard()
                 }
             }
         })
