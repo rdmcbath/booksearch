@@ -58,12 +58,7 @@ class DetailFragment : Fragment() {
         title = item.volumeInfo?.title.toString()
         authors = item.volumeInfo?.authors.toString()
         date = item.volumeInfo?.publishedDate.toString()
-        var description: String? = null
-        if (description != null) { // description is sometimes null
-            description = item.volumeInfo?.description.toString()
-        } else {
-            description = "Description is not available."
-        }
+        val description = item.volumeInfo?.description.toString()
 
         binding?.let {
             Glide.with(requireActivity())
