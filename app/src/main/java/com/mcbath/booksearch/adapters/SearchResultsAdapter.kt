@@ -18,6 +18,7 @@ import com.mcbath.booksearch.view.DetailFragment
 import com.mcbath.booksearch.view.MainActivity
 import java.util.*
 
+
 /*RecyclerViewAdapter binds the views for each position in the list.*/
 
 class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchResultsHolder>() {
@@ -72,8 +73,12 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchRes
     }
 
     fun appendResults(response: List<Item>) {
-        this.items = items
         items.size + response.size
+        notifyDataSetChanged()
+    }
+
+    fun clearItems(items: List<Item>) {
+        clearItems(this.items)
         notifyDataSetChanged()
     }
 

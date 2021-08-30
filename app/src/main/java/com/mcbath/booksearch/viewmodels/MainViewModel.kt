@@ -13,7 +13,6 @@ import com.mcbath.booksearch.models.VolumesResponse
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var bookRepository: BookRepository? = null
-    private val volumesResponse: VolumesResponse = VolumesResponse()
 
     private var volumesResponseLiveData: LiveData<VolumesResponse?>? = null
 

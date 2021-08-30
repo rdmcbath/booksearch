@@ -29,7 +29,7 @@ import com.mcbath.booksearch.viewmodels.MainViewModel
    NOTE: I did not have time to clear out the list when the user clears the edit text field */
 
 class MainFragment : Fragment() {
-    private var viewModel: MainViewModel? = null
+    private lateinit var viewModel: MainViewModel
     private var adapter: SearchResultsAdapter? = null
     private var binding: FragmentMainBinding? = null
     private var keyword = ""
@@ -46,11 +46,20 @@ class MainFragment : Fragment() {
         adapter = SearchResultsAdapter()
         binding!!.searchResultsRv.layoutManager = LinearLayoutManager(context)
         binding!!.searchResultsRv.adapter = adapter
+
         binding!!.searchButton.setOnClickListener {
             searchVolumes(1, maxResults)
             it.hideKeyboard()
+            keyword = binding!!.searchTermKeyword.editableText.toString().trim()
+            if(keyword.isEmpty() || keyword.length == 0 || keyword.equals("")) {
+                binding!!.searchResultsRv.visibility = View.GONE
+                binding!!.moreButton.visibility = View.GONE
+            } else {
+                searchVolumes(1, maxResults)
+                it.hideKeyboard()
+                binding!!.searchResultsRv.visibility = View.VISIBLE
+            }
         }
-
         return view
     }
 
@@ -58,13 +67,14 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        viewModel!!.init()
-        viewModel!!.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
+        viewModel.init()
+        viewModel.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
             if (volumesResponse != null) {
                 adapter!!.setResults(volumesResponse.items!!)
                 if (adapter!!.itemCount > 1) {
-                    binding!!.moreButton.setVisibility(View.VISIBLE)
+                    binding!!.moreButton.visibility = View.VISIBLE
                 }
+
                 binding!!.moreButton.setOnClickListener {
                     searchVolumes(beginAgainIndex, maxResults)
                     adapter!!.appendResults(volumesResponse.items!!)
@@ -78,12 +88,11 @@ class MainFragment : Fragment() {
        repository to trigger an API request using Retrofit2 then updates the response
        into the LiveData */
     private fun searchVolumes(startIndex: Int, maxResults: Int) {
-        keyword = binding!!.searchTermKeyword.editableText.toString()
         beginAgainIndex = startIndex + maxResults
 
         Log.d(TAG, "startIndex=$startIndex, beginAgainIndex=$beginAgainIndex")
 
-        viewModel!!.searchVolumes(keyword, startIndex, maxResults)
+        viewModel.searchVolumes(keyword, startIndex, maxResults)
     }
 
     private fun View.hideKeyboard() {
