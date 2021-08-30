@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mcbath.booksearch.adapters.SearchResultsAdapter
 import com.mcbath.booksearch.databinding.FragmentMainBinding
-import com.mcbath.booksearch.utils.Utils
 import com.mcbath.booksearch.viewmodels.MainViewModel
 
 /*
@@ -33,6 +32,7 @@ class MainFragment : Fragment() {
     private var viewModel: MainViewModel? = null
     private var adapter: SearchResultsAdapter? = null
     private var binding: FragmentMainBinding? = null
+    private var keyword = ""
     private var beginAgainIndex = 1
     private var maxResults = 20
 
@@ -57,6 +57,10 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (savedInstanceState != null) {
+            keyword = savedInstanceState.getString("editText").toString()
+        }
+
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         viewModel!!.init()
         viewModel!!.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
@@ -78,7 +82,7 @@ class MainFragment : Fragment() {
        repository to trigger an API request using Retrofit2 then updates the response
        into the LiveData */
     private fun searchVolumes(startIndex: Int, maxResults: Int) {
-        val keyword = binding!!.searchTermKeyword.editableText.toString()
+        keyword = binding!!.searchTermKeyword.editableText.toString()
         beginAgainIndex = startIndex + maxResults
 
         Log.d(TAG, "startIndex=$startIndex, beginAgainIndex=$beginAgainIndex")
@@ -94,6 +98,11 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    override fun onSaveInstanceState(extra: Bundle) {
+        super.onSaveInstanceState(extra)
+        extra.putString("editText", keyword)
     }
 
     companion object {

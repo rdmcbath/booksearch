@@ -11,6 +11,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/*Saving and loading app data*/
+
 class BookRepository {
     private val bookSearchService: ApiService
     private val volumesResponseLiveData: MutableLiveData<VolumesResponse> = MutableLiveData()

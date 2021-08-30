@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.mcbath.booksearch.R
 
-/*MainActivity adds the MainFragment which handles the views.*/
+/*MainActivity adds the MainFragment which handles the views.
+* Configuration changes like rotation trigger the onDestroy method and will
+* be recreated.*/
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +15,8 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .add(android.R.id.content, MainFragment.newInstance()).commit()
+                .add(android.R.id.content, MainFragment.newInstance())
+                .addToBackStack("mainFragment").commit()
         }
     }
 }
