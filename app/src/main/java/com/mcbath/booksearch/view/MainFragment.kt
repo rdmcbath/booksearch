@@ -60,6 +60,7 @@ class MainFragment : Fragment() {
                 binding!!.searchResultsRv.visibility = View.VISIBLE
             }
         }
+
         return view
     }
 
@@ -68,6 +69,7 @@ class MainFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         viewModel.init()
+
         viewModel.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
             if (volumesResponse != null) {
                 adapter!!.setResults(volumesResponse.items!!)

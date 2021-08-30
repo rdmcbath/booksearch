@@ -9,8 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +18,7 @@ import com.mcbath.booksearch.models.Item
 import com.mcbath.booksearch.utils.Utils
 import com.mcbath.booksearch.view.DetailFragment
 import com.mcbath.booksearch.view.MainActivity
+import com.mcbath.booksearch.viewmodels.MainViewModel
 import java.util.*
 
 
