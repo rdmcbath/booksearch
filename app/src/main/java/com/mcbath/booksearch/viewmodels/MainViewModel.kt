@@ -29,8 +29,4 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun getVolumesResponseLiveData(): LiveData<VolumesResponse?>? {
         return volumesResponseLiveData
     }
-
-    fun getWebReaderLink(): String? {
-        return volumesResponse.webReaderLink
-    }
 }

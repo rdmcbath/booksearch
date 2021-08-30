@@ -3,7 +3,6 @@ package com.mcbath.booksearch.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.mcbath.booksearch.R
-import com.mcbath.booksearch.models.Volume
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

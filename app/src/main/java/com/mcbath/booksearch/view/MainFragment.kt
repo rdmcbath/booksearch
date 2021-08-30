@@ -47,8 +47,6 @@ class MainFragment : Fragment() {
         binding!!.searchButton.setOnClickListener {
             searchVolumes(1, maxResults)
             it.hideKeyboard()
-
-            Log.d(TAG, "beginAgainIndex=$beginAgainIndex")
         }
         binding!!.moreButton.setOnClickListener {
             searchVolumes(beginAgainIndex, maxResults)
@@ -63,7 +61,7 @@ class MainFragment : Fragment() {
         val utils = Utils()
         utils.removeUnderline(binding!!.searchTermKeyword)
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         viewModel!!.init()
         viewModel!!.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
             if (volumesResponse != null) {

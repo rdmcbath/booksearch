@@ -8,15 +8,11 @@ data class VolumesResponse(
     @Expose
     val kind: String? = null,
 
-    @SerializedName("webReaderLink")
-    @Expose
-    val webReaderLink: String? = null,
-
     @SerializedName("items")
     @Expose
-    var items: List<Volume>? = null,
+    var items: List<Item>? = null,
 
     @SerializedName("totalItems")
     @Expose
-    var totalItems: Int = 0
+    var totalItems: Int = 0,
 )

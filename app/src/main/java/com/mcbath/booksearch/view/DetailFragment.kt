@@ -1,20 +1,26 @@
 package com.mcbath.booksearch.view
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.mcbath.booksearch.R
 import com.mcbath.booksearch.databinding.FragmentDetailBinding
-import com.mcbath.booksearch.models.Volume
+import com.mcbath.booksearch.models.Item
 import com.mcbath.booksearch.utils.Utils
 import com.mcbath.booksearch.viewmodels.MainViewModel
+
 
 /* get the data model "volume" bundle and use it to populate the views. */
 
@@ -26,15 +32,14 @@ class DetailFragment : Fragment() {
     private lateinit var authors: String
     private lateinit var date: String
     private lateinit var description: String
-    private lateinit var volume: Volume
-    private var webLinkUrl = ""
+    private lateinit var item: Item
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val bundle = this.arguments
         if (bundle != null) {
-            (bundle.getParcelable<Parcelable>("volume") as Volume).also { volume = it }
+            (bundle.getParcelable<Parcelable>("volume") as Item).also { item = it }
         }
     }
 
@@ -46,17 +51,6 @@ class DetailFragment : Fragment() {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
         val view: View = binding!!.root
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel!!.init()
-        viewModel!!.getWebReaderLink()
-        viewModel!!.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
-            viewModel!!.getWebReaderLink()
-            if (volumesResponse != null) {
-                webLinkUrl = volumesResponse.webReaderLink.toString()
-
-            }
-        })
-
         updateUI()
 
         return view
@@ -64,12 +58,12 @@ class DetailFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateUI() {
-        imageUrl = volume.volumeInfo?.imageLinks?.smallThumbnail?.replace("http://", "https://")
+        imageUrl = item.volumeInfo?.imageLinks?.smallThumbnail?.replace("http://", "https://")
             .toString()
-        title = volume.volumeInfo?.title.toString()
-        authors = volume.volumeInfo?.authors.toString()
-        date = volume.volumeInfo?.publishedDate.toString()
-        description = volume.volumeInfo?.subtitle.toString()
+        title = item.volumeInfo?.title.toString()
+        authors = item.volumeInfo?.authors.toString()
+        date = item.volumeInfo?.publishedDate.toString()
+        description = item.volumeInfo?.description.toString()
 
         binding?.let {
             Glide.with(requireActivity())
@@ -79,20 +73,34 @@ class DetailFragment : Fragment() {
                 .into(it.bookImage)
         }
         val utils = Utils()
-        val authors = volume.volumeInfo?.authors?.let { utils.stringJoin(it, ", ") }
+        val authors = item.volumeInfo?.authors?.let { utils.stringJoin(it, ", ") }
         binding?.title?.text = title
         binding?.authors?.text = authors
         binding?.publishDate?.text = date
         binding?.description?.text = description
+
         binding?.buttonWebReader?.setOnClickListener(View.OnClickListener {
-            binding?.bookDetailLayout?.visibility = View.GONE
-            binding?.webViewContainer?.visibility = View.VISIBLE
-            binding?.webView?.setBackgroundColor(0)
-            binding?.webView?.webChromeClient
-            binding?.webView?.loadUrl(webLinkUrl)
+            val webLinkUrl = item.accessInfo?.webReaderLink?.replace("http://", "https://")
+
+            val intent = Intent(requireActivity(), WebviewActivity::class.java)
+            intent.putExtra("url", webLinkUrl)
+            startActivity(intent);
+
+//            binding?.webView?.setBackgroundColor(0)
+//            binding?.webView?.settings?.setJavaScriptEnabled(true)
+//            binding?.webView?.webViewClient  = object : WebViewClient() {
+//                    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//                        if (webLinkUrl != null) {
+//                            view?.loadUrl(webLinkUrl)
+//                        }
+//                        return true
+//                    }
+//                }
+//            if (webLinkUrl != null) {
+//                binding?.webView?.loadUrl(webLinkUrl)
+//            }
         })
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

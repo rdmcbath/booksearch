@@ -1,6 +1,7 @@
 package com.mcbath.booksearch.adapters
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mcbath.booksearch.R
-import com.mcbath.booksearch.models.Volume
+import com.mcbath.booksearch.models.Item
 import com.mcbath.booksearch.utils.Utils
 import com.mcbath.booksearch.view.DetailFragment
 import com.mcbath.booksearch.view.MainActivity
@@ -20,7 +21,7 @@ import java.util.*
 
 
 class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchResultsHolder>() {
-    private var volumes: List<Volume> = ArrayList()
+    private var items: List<Item> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultsHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -29,30 +30,30 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchRes
     }
 
     override fun onBindViewHolder(holder: SearchResultsHolder, position: Int) {
-        val volume = volumes[position]
+        val item = items[position]
 
-        val title = volume.volumeInfo?.title
+        val title = item.volumeInfo?.title
 
         holder.titleTextView.text = title
-        holder.publishedDateTextView.text = volume.volumeInfo?.publishedDate
-        if (volume.volumeInfo?.imageLinks != null) {
+        holder.publishedDateTextView.text = item.volumeInfo?.publishedDate
+        if (item.volumeInfo?.imageLinks != null) {
             val imageUrl =
-                volume.volumeInfo.imageLinks.smallThumbnail?.replace("http://", "https://")
+                item.volumeInfo.imageLinks.smallThumbnail?.replace("http://", "https://")
                     .toString()
             Glide.with(holder.itemView)
                 .load(imageUrl)
                 .into(holder.thumbnailImageView)
         }
-        if (volume.volumeInfo?.authors != null) {
+        if (item.volumeInfo?.authors != null) {
             val utils = Utils()
-            val authors = utils.stringJoin(volume.volumeInfo.authors, ", ")
+            val authors = utils.stringJoin(item.volumeInfo.authors, ", ")
             holder.authorsTextView.text = authors
         }
 
         holder.itemView.setOnClickListener(View.OnClickListener {
             val fragment: Fragment = DetailFragment()
             val bundle = Bundle()
-            bundle.putParcelable("volume", volume)
+            bundle.putParcelable("volume", item)
             fragment.setArguments(bundle)
             val fm: FragmentManager = (it.context as MainActivity).supportFragmentManager
             val ft: FragmentTransaction = fm.beginTransaction()
@@ -62,11 +63,11 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.SearchRes
     }
 
     override fun getItemCount(): Int {
-        return volumes.size
+        return items.size
     }
 
-    fun setResults(volumes: List<Volume>) {
-        this.volumes = volumes
+    fun setResults(items: List<Item>) {
+        this.items = items
         notifyDataSetChanged()
     }
 
