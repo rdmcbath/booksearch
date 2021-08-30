@@ -57,10 +57,6 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState != null) {
-            keyword = savedInstanceState.getString("editText").toString()
-        }
-
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         viewModel!!.init()
         viewModel!!.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
@@ -98,11 +94,6 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    override fun onSaveInstanceState(extra: Bundle) {
-        super.onSaveInstanceState(extra)
-        extra.putString("editText", keyword)
     }
 
     companion object {
