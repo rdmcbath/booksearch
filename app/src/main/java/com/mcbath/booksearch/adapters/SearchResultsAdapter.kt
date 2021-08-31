@@ -18,7 +18,6 @@ import com.mcbath.booksearch.models.Item
 import com.mcbath.booksearch.utils.Utils
 import com.mcbath.booksearch.view.DetailFragment
 import com.mcbath.booksearch.view.MainActivity
-import com.mcbath.booksearch.viewmodels.MainViewModel
 import java.util.*
 
 
