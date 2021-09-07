@@ -44,10 +44,10 @@ class MainFragment : Fragment() {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         val view: View = binding!!.root
         adapter = SearchResultsAdapter()
-        binding!!.searchResultsRv.layoutManager = LinearLayoutManager(context)
-        binding!!.searchResultsRv.adapter = adapter
+        binding?.searchResultsRv?.layoutManager = LinearLayoutManager(context)
+        binding?.searchResultsRv?.adapter = adapter
 
-        binding!!.searchButton.setOnClickListener {
+        binding?.searchButton?.setOnClickListener {
             searchVolumes(1, maxResults)
             it.hideKeyboard()
             keyword = binding!!.searchTermKeyword.editableText.toString().trim()
@@ -72,9 +72,9 @@ class MainFragment : Fragment() {
 
         viewModel.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
             if (volumesResponse != null) {
-                adapter!!.setResults(volumesResponse.items!!)
-                if (adapter!!.itemCount > 1) {
-                    binding!!.moreButton.visibility = View.VISIBLE
+                volumesResponse.items?.let { adapter?.setResults(it) }
+                if (adapter?.itemCount!! > 1) {
+                    binding?.moreButton?.visibility = View.VISIBLE
                 }
 
                 binding!!.moreButton.setOnClickListener {
@@ -84,6 +84,17 @@ class MainFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun checkInternetConnection() {
+        viewModel.connection.observe(this) { hasInternet ->
+            if(!hasInternet) {
+                //no network connection, show error message
+            }
+            else {
+                //we have a network connection
+            }
+        }
     }
 
     /* Search Button triggers the search using a method exposed by MainViewModel which uses the
