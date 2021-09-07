@@ -47,7 +47,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return volumesResponseLiveData
     }
 
-    fun SetDataList(list: List<Item>) {
+    fun setDataList(list: List<Item>) {
         itemList = list
     }
 

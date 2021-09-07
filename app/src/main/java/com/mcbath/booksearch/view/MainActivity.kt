@@ -22,8 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .add(android.R.id.content, MainFragment.newInstance())
-                .addToBackStack("mainFragment").commit()
+                .add(android.R.id.content, MainFragment.newInstance()).commit()
         }
     }
 }

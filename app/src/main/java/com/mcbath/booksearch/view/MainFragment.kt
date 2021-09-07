@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,9 +41,9 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): ScrollView? {
         binding = FragmentMainBinding.inflate(inflater, container, false)
-        val view: View = binding!!.root
+        val view: ScrollView? = binding?.root
         adapter = SearchResultsAdapter()
         binding?.searchResultsRv?.layoutManager = LinearLayoutManager(context)
         binding?.searchResultsRv?.adapter = adapter
@@ -68,6 +69,9 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
+        checkInternetConnection()
+
         viewModel.init()
 
         viewModel.getVolumesResponseLiveData()!!.observe(viewLifecycleOwner, { volumesResponse ->
@@ -87,7 +91,7 @@ class MainFragment : Fragment() {
     }
 
     private fun checkInternetConnection() {
-        viewModel.connection.observe(this) { hasInternet ->
+        viewModel.connection.observe(viewLifecycleOwner) { hasInternet ->
             if(!hasInternet) {
                 //no network connection, show error message
             }
