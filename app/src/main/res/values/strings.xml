@@ -12,4 +12,5 @@
     <string name="enter_keyword">Enter keyword</string>
     <string name="search">Search</string>
     <string name="more">More</string>
+    <string name="network_error">The network is not available. Try again later.</string>
 </resources>

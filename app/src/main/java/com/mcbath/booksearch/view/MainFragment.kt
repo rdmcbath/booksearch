@@ -49,16 +49,19 @@ class MainFragment : Fragment() {
         binding?.searchResultsRv?.adapter = adapter
 
         binding?.searchButton?.setOnClickListener {
+            // check internet connection again before fetching the data (Activity handles error view)
+            (activity as MainActivity).checkInternetConnection()
+
             searchVolumes(1, maxResults)
             it.hideKeyboard()
-            keyword = binding!!.searchTermKeyword.editableText.toString().trim()
+            keyword = binding?.searchTermKeyword?.editableText.toString().trim()
             if(keyword.isEmpty() || keyword.isEmpty() || keyword.equals("")) {
-                binding!!.searchResultsRv.visibility = View.GONE
-                binding!!.moreButton.visibility = View.GONE
+                binding?.searchResultsRv?.visibility = View.GONE
+                binding?.moreButton?.visibility = View.GONE
             } else {
                 searchVolumes(1, maxResults)
                 it.hideKeyboard()
-                binding!!.searchResultsRv.visibility = View.VISIBLE
+                binding?.searchResultsRv?.visibility = View.VISIBLE
             }
         }
 
@@ -69,8 +72,6 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-
-        checkInternetConnection()
 
         viewModel.init()
 
@@ -83,22 +84,11 @@ class MainFragment : Fragment() {
 
                 binding!!.moreButton.setOnClickListener {
                     searchVolumes(beginAgainIndex, maxResults)
-                    adapter!!.appendResults(volumesResponse.items!!)
+                    volumesResponse.items?.let { it1 -> adapter?.appendResults(it1) }
                     it.hideKeyboard()
                 }
             }
         })
-    }
-
-    private fun checkInternetConnection() {
-        viewModel.connection.observe(viewLifecycleOwner) { hasInternet ->
-            if(!hasInternet) {
-                //no network connection, show error message
-            }
-            else {
-                //we have a network connection
-            }
-        }
     }
 
     /* Search Button triggers the search using a method exposed by MainViewModel which uses the
